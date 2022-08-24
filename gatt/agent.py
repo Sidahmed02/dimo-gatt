@@ -121,7 +121,9 @@ class Agent(dbus.service.Object):
         print("RequestAuthorization (%s)" % (device))
         auth = ask("Authorize? (yes/no): ")
         if (auth == "yes"):
+            logger.info("Pairing accepted")
             return
+        logger.info("Pairing rejected")
         raise Rejected("Pairing rejected")
 
     @dbus.service.method(AGENT_INTERFACE,
@@ -134,6 +136,7 @@ def pair_reply():
     print("Device paired")
     set_trusted(dev_path)
     dev_connect(dev_path)
+    logger.info("Device paired")
     mainloop.quit()
 
 
